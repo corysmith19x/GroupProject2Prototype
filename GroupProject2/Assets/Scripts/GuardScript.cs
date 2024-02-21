@@ -58,16 +58,19 @@ public class GuardScript : MonoBehaviour
 
     void ChasePlayer()
     {
+        agent.speed = 6;
         agent.SetDestination(player.position);
     }
 
     void ReturnToOrigin()
     {
+        agent.speed = 4;
         agent.SetDestination(origin);   
     }
 
     public void InvestigateSound(Vector3 spot)
     {
+        agent.speed = 4;
         investigating = true;
         StartCoroutine("InvestigateCooldown");
         agent.SetDestination(spot);
