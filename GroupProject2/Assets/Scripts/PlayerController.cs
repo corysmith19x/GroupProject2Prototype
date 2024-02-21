@@ -53,6 +53,11 @@ public class PlayerController : MonoBehaviour
             rockPile.Collapse();
             rockPile = null;
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            QuitGame();
+        }
     }
 
     void ThrowPebble()
@@ -81,5 +86,10 @@ public class PlayerController : MonoBehaviour
         {
             rockPile = null;
         }
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 }
