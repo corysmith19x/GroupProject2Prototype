@@ -16,6 +16,9 @@ public class GuardScript : MonoBehaviour
     bool inSightRange;
     public bool investigating = false;
     bool stunned = false;
+	
+	public GameObject dangerVolume;
+	
     // Start is called before the first frame update
     void Start()
     {
@@ -37,9 +40,14 @@ public class GuardScript : MonoBehaviour
         {
             if (inSightRange)
             {
+				dangerVolume.SetActive(true);
                 ChasePlayer();
             }
-            else ReturnToOrigin();
+            else 
+			{
+				dangerVolume.SetActive(false);
+				ReturnToOrigin();
+			}
         }
         else
         {
@@ -52,8 +60,6 @@ public class GuardScript : MonoBehaviour
                 investigating = false;
             }
         }
-
-        
     }
 
     void ChasePlayer()
