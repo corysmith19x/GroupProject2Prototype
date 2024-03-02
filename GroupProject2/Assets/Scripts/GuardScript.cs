@@ -10,7 +10,7 @@ public class GuardScript : MonoBehaviour
     Vector3 origin;
 
     float sightRange = 20f;
-    float catchRange = 1.2f;
+    //float catchRange = 1.2f;
 
     public float chaseSpeed, patrolSpeed;
     bool inSightRange;

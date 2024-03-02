@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     //to do:different speeds, and stunning the guard with zones where the rock piles would be
 {
     public float moveSpeed = 5f;
-    public float mouseSensitivity = 0.2f;
+    public float mouseSensitivity = 0.15f;
 
     private CharacterController controller;
     private Transform playerCamera;
@@ -19,8 +19,12 @@ public class PlayerController : MonoBehaviour
     public GameObject pebblePrefab;
     public int pebbles;
 	
-	public GameObject pauseMenu;
+	public GameObject pause;
+	public GameObject arrow;
+	public GameObject arrow1;
 	public bool pauseState;
+	public bool pauseStart;
+	public bool unpauseStart;
 
     RockPileScript rockPile;
 
@@ -33,12 +37,24 @@ public class PlayerController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
 		
 		pauseState = false;
+		pauseStart = false;
+		arrow.SetActive(false);
+		arrow1.SetActive(false);
     }
 
     void Update()
     {
-		if (!pauseState)
+		if (pauseState == false)
 		{
+			if (!unpauseStart)
+			{
+				Time.timeScale = 1;
+				pause.SetActive(false);
+				arrow.SetActive(false);
+				arrow1.SetActive(false);
+				unpauseStart = true;
+			}
+			
 			float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
 			float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
 
@@ -62,14 +78,35 @@ public class PlayerController : MonoBehaviour
 				rockPile.Collapse();
 				rockPile = null;
 			}
-		
-			if (Input.GetButtonDown("Cancel")) QuitGame();
+			
+			if (Input.GetButtonDown("Submit"))
+				pauseState = true;
 		}
 		
-		if (Input.GetButtonDown("Submit") && !pauseState)
-			PauseGame();
-		else if (Input.GetButtonDown("Submit") && pauseState)
-			UnpauseGame();
+		if (pauseState == true)
+		{
+			if (!pauseStart)
+			{
+				Time.timeScale = 0;
+				pause.SetActive(true);
+				arrow.SetActive(true);
+				pauseStart = true;
+			}
+		
+			if(Input.GetButtonDown("Vertical"))
+			{
+				arrow.SetActive(!arrow.activeSelf);
+				arrow1.SetActive(!arrow1.activeSelf);
+			}
+			
+			if (Input.GetButtonDown("Submit"))
+			{
+				if (arrow.activeSelf)
+					pauseState = false;
+			}
+		}
+		
+		if (Input.GetButtonDown("Cancel")) Application.Quit();
     }
 
     void ThrowPebble()
@@ -99,20 +136,6 @@ public class PlayerController : MonoBehaviour
             rockPile = null;
         }
     }
-	
-	public void PauseGame()
-	{
-		pauseState = true;
-		pauseMenu.SetActive(true);
-		Time.timeScale = 0;
-	}
-	
-	public void UnpauseGame()
-	{
-		pauseState = false;
-		pauseMenu.SetActive(false);
-		Time.timeScale = 1;
-	}
 
     public void QuitGame()
     {
