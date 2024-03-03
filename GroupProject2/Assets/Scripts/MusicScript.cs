@@ -15,7 +15,7 @@ public class MusicScript : MonoBehaviour
 
 	public void Alone() 
     {
-        aloneSource.volume = 1;
+        aloneSource.volume = 0.5f;
         nearbySource.volume = 0;
         chaseSource.volume = 0;
     }
@@ -23,7 +23,7 @@ public class MusicScript : MonoBehaviour
     public void Nearby()
     {
         aloneSource.volume = 0;
-        nearbySource.volume = 1;
+        nearbySource.volume = 0.5f;
         chaseSource.volume = 0;
     }
 
@@ -31,6 +31,6 @@ public class MusicScript : MonoBehaviour
     {
         aloneSource.volume = 0;
         nearbySource.volume = 0;
-        chaseSource.volume = 1;
+        chaseSource.volume = 0.5f;
     }
 }

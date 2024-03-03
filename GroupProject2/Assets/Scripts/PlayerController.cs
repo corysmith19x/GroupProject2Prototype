@@ -64,7 +64,7 @@ public class PlayerController : MonoBehaviour
     {
         GameObject newPebble = Instantiate(pebblePrefab, pebbleSpawn.position, transform.rotation);
         pebbles--;
-        newPebble.GetComponent<Rigidbody>().velocity = transform.forward * 10;
+        newPebble.GetComponent<Rigidbody>().velocity = transform.forward * 20;
         newPebble.GetComponent<Rigidbody>().AddForce(3 * Vector3.up);
     }
 

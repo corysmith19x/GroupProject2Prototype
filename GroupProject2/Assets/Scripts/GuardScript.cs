@@ -10,19 +10,28 @@ public class GuardScript : MonoBehaviour
     public Transform player;
     Vector3 origin;
 
-    float sightRange = 20f;
+    float sightRange = 15f;
     float catchRange = 1.2f;
 
     public float chaseSpeed, patrolSpeed;
     bool inSightRange;
     public bool investigating = false;
     bool stunned = false;
+
+    //Cory's addition:
+    public Animator animator;
+    bool isIdle;
+
+
     // Start is called before the first frame update
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         origin = transform.position;
         musicScript = GameObject.FindObjectOfType<MusicScript>();
+        //Animator
+        animator = GetComponentInChildren<Animator>();
+        animator.SetBool("isIdle", true);
     }
 
     // Update is called once per frame
@@ -71,11 +80,16 @@ public class GuardScript : MonoBehaviour
     {
         musicScript.Chase();
         agent.SetDestination(player.position);
+        //Animations
+        animator.SetBool("isIdle", false);
+        animator.SetBool("isChasing", true);
     }
 
     void ReturnToOrigin()
     {
-        agent.SetDestination(origin);   
+        agent.SetDestination(origin);
+        //Animations
+        animator.SetBool("isChasing", false);
     }
 
     public void InvestigateSound(Vector3 spot)
@@ -84,12 +98,17 @@ public class GuardScript : MonoBehaviour
         musicScript.Nearby();
         StartCoroutine("InvestigateCooldown");
         agent.SetDestination(spot);
+        //Animations
+        animator.SetBool("isIdle", false);
     }
 
     public IEnumerator InvestigateCooldown()
     {
-        yield return new WaitForSeconds(4);
+        yield return new WaitForSeconds(5);
         investigating = false;
+        //Animations
+        yield return new WaitForSeconds(5);
+        animator.SetBool("isIdle", true);
     }
 
     public IEnumerator Stunned()
