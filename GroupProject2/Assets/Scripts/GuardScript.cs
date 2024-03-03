@@ -6,6 +6,7 @@ using UnityEngine.AI;
 public class GuardScript : MonoBehaviour
 {
     NavMeshAgent agent;
+    MusicScript musicScript;
     public Transform player;
     Vector3 origin;
 
@@ -21,6 +22,7 @@ public class GuardScript : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         origin = transform.position;
+        musicScript = GameObject.FindObjectOfType<MusicScript>();
     }
 
     // Update is called once per frame
@@ -39,7 +41,11 @@ public class GuardScript : MonoBehaviour
             {
                 ChasePlayer();
             }
-            else ReturnToOrigin();
+            else
+            {
+                ReturnToOrigin();
+                musicScript.Alone();
+            }
         }
         else
         {
@@ -53,11 +59,17 @@ public class GuardScript : MonoBehaviour
             }
         }
 
+        if (distance < catchRange)
+        {
+            //the guard caught you. make the lose state, aka the scene that shows when you lose.
+        }
+
         
     }
 
     void ChasePlayer()
     {
+        musicScript.Chase();
         agent.SetDestination(player.position);
     }
 
@@ -69,13 +81,14 @@ public class GuardScript : MonoBehaviour
     public void InvestigateSound(Vector3 spot)
     {
         investigating = true;
+        musicScript.Nearby();
         StartCoroutine("InvestigateCooldown");
         agent.SetDestination(spot);
     }
 
     public IEnumerator InvestigateCooldown()
     {
-        yield return new WaitForSeconds(10);
+        yield return new WaitForSeconds(4);
         investigating = false;
     }
 
