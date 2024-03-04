@@ -21,11 +21,13 @@ public class GuardScript : MonoBehaviour
     //Cory's addition:
     public Animator animator;
     bool isIdle;
+    public GameObject iM;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        iM = GameObject.Find("InterfaceManager");
         agent = GetComponent<NavMeshAgent>();
         origin = transform.position;
         musicScript = GameObject.FindObjectOfType<MusicScript>();
@@ -71,6 +73,7 @@ public class GuardScript : MonoBehaviour
         if (distance < catchRange)
         {
             //the guard caught you. make the lose state, aka the scene that shows when you lose.
+            iM.GetComponent<InterfaceManager>().gameOver();
         }
 
         
@@ -114,8 +117,10 @@ public class GuardScript : MonoBehaviour
     public IEnumerator Stunned()
     {
         stunned = true;
+        animator.SetBool("isStunned", true);
         agent.SetDestination(transform.position);
-        yield return new WaitForSeconds(4);
+        yield return new WaitForSeconds(5);
         stunned = false;
+        animator.SetBool("isStunned", false);
     }
 }

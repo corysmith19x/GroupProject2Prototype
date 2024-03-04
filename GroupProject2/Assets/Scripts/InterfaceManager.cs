@@ -79,4 +79,13 @@ public class InterfaceManager : MonoBehaviour
 		pauseStart = false;
         Time.timeScale = 1;
     }
+
+	public void gameOver()
+    {
+		SceneManager.LoadScene("GameOver");
+	}
+	public void winScene()
+    {
+		SceneManager.LoadScene("WinScreen");
+    }
 }
